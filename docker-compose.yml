@@ -1,7 +1,7 @@
 version: '3'
 services:
   web:
-    image: 127.0.0.1:5000/docker-httpd-tomcat_web
+    image: dshot/docker-httpd-tomcat_web
     deploy:
       # mode: global
       replicas: 3
@@ -15,7 +15,7 @@ services:
     #   - "8009"
     build: tomcat/.
   httpd:
-    image: 127.0.0.1:5000/docker-httpd-tomcat_httpd
+    image: dshot/docker-httpd-tomcat_httpd
     volumes:
       - ./logs:/var/log/apache2
     ports:
