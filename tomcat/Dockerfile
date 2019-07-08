@@ -4,7 +4,7 @@ FROM tomcat:7
 RUN apt-get install -y unzip
 
 RUN rm -rf /usr/local/tomcat/webapps/*
-#RUN rm -rf /usr/local/tomcat/webapps/ROOT/*
+# RUN rm -rf /usr/local/tomcat/webapps/ROOT/*
 
 COPY ./companyNews.war /usr/local/tomcat/webapps/companyNews.war
 
