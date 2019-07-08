@@ -1,0 +1,7 @@
+---
+
+docker_compose_file: "/home/rohit/Projects/Docker/httpd-tomcat/Docker-Httpd-Tomcat/docker-compose.yml"
+remote_user: test
+docker_group: docker
+new_user: test
+default_password: toor

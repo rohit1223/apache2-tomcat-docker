@@ -1,0 +1,18 @@
+- name: Create primary swarm manager
+  shell: docker swarm init --advertise-addr {{ ansible_enp0s3['ipv4']['address'] }}
+
+- name: Docker swarm manager token
+  shell: docker swarm join-token -q manager
+  register: manager_token
+
+- name: Docker swarm worker token
+  shell: docker swarm join-token -q worker
+  register: worker_token
+
+- name: List docker Networks
+  shell: docker network ls
+  register: docker_network
+
+- name: create network when not there
+  shell: docker network create --driver overlay --subnet 17.0.0.0/16 --gateway 17.0.0.1 web_net
+

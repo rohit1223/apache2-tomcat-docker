@@ -1,0 +1,6 @@
+---
+# vars file for web
+remote_user: test
+docker_group: docker
+default_password: toor
+new_user: test

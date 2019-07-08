@@ -1,0 +1,32 @@
+
+- name: Initial setup for aplication
+  hosts: all
+  remote_user: root
+  become: yes
+  become_method: sudo
+  roles:
+    - python
+    - docker
+
+- name: Setup manager nodes
+  hosts: manager1
+  remote_user: root
+  become: yes
+  become_method: sudo
+  roles:
+    - docker-swarm-manager
+
+
+- name: setup worker nodes
+  hosts: worker_nodes
+  roles:
+    - docker-swarm-worker
+
+- name: Setup manager nodes
+  hosts: manager1
+  tasks:
+    - name: Download docker-compose
+      get_url: url=https://raw.githubusercontent.com/rohit1223/apache2-tomcat-docker/master/docker-compose.yml dest=/tmp/docker-compose.yml
+
+    - name: Deploy project using docker swarm
+      shell: docker stack deploy -c /tmp/docker-compose.yml docker-httpd-tomcat

@@ -1,0 +1,55 @@
+---
+# tasks file for web
+
+# ONE TIME TASK TO REMOVE OLD DOCKER VERSION
+
+# - name: Remove old docker versions
+#   apt: name={{ item }} state=removed
+#   with_items:
+#     - docker
+#     - docker-engine
+#     - docker.io
+#     - containerd
+#     - runc
+
+- name: Install required system packages
+  apt: name={{ item }} state=installed update_cache=yes
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg-agent
+    - software-properties-common
+
+- name: Add Docker GPG apt Key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add Docker Repository
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu bionic stable
+    state: present
+
+- name: Update apt and install docker-ce
+  apt: update_cache=yes name=docker-ce state=installed
+
+# sudo groupadd docker
+- name: Create "docker" group
+  group:
+    name: "{{ docker_group }}"
+    state: present
+
+# sudo usermod -aG docker ubuntu
+- name: Add remote "test" user to "docker" group
+  user:
+    name: "{{ remote_user }}"
+    group: "{{ docker_group }}"
+    append: yes
+
+
+- name: Install docker-compose
+  apt:
+    name: docker-compose=1.8.*
+    state: installed
+    update_cache: yes

@@ -1,0 +1,34 @@
+---
+
+- name: Cleanup manager
+  hosts: manager1
+  vars_files:
+    - roles/docker/vars/main.yml
+  tasks:
+    - name: Remove docker stack
+      shell: docker stack rm docker-httpd-tomcat
+
+    - name: Delete swarm
+      shell: docker swarm leave --force
+
+    - name: Delete docker-compose file
+      shell: rm /tmp/docker-compose.yml
+
+    # - name: delete test user
+    #   shell: deluser {{ new_user }}
+
+
+- name: Setup manager nodesCleanup worker
+  hosts: worker_nodes
+  remote_user: root
+  become: yes
+  become_method: sudo
+  vars_files:
+    - roles/docker/vars/main.yml
+
+  tasks:
+    - name: Delete swarm
+      shell: docker swarm leave --force
+
+    # - name: delete test user
+    #   shell: deluser {{ new_user }}
