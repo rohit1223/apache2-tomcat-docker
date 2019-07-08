@@ -13,10 +13,16 @@ services:
         condition: on-failure
     expose:
       - "8009"
+    networks:
+      - web_net
     build: tomcat/.
   httpd:
     image: dshot/docker-httpd-tomcat_httpd
     ports:
       - 80
     build: httpd/.
+    networks:
+      - web_net
+networks:
+  web_net:
 
